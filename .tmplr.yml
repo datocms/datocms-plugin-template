@@ -1,0 +1,83 @@
+steps:
+  - read: plugin_name
+    prompt: Hey! What should this plugin be called?
+    default:
+      eval: "{{ filesystem.rootdir | Capital Case }}"
+
+  - read: community_plugin
+    prompt: Are you planning to publish this plugin on our Marketplace?
+    choices:
+      - Yes!
+      - No, it will be a private plugin: ""
+
+  - if: community_plugin
+    steps:
+      - read: package_name
+        prompt: Under what name should the NPM package be published? (It should begin with `datocms-plugin-`)
+        default:
+          eval: "datocms-plugin-{{ plugin_name | kebab-case }}"
+
+      - read: package_description
+        prompt: "Describe the plugin in a sentence"
+
+      - read: permissions
+        prompt: |
+          Does the plugin need to perform actions and API calls on behalf of the logged-in user?
+
+          For more info: https://www.datocms.com/docs/plugin-sdk/additional-permissions
+        choices:
+          - No: "[]"
+          - Yes: '["currentUserAccessToken"]'
+
+      - read: package_author_name
+        prompt: "Who is the author of this plugin?"
+        default:
+          from: git.author_name
+
+      - read: package_author_email
+        prompt: What is the author email address?
+        default:
+          from: git.author_email
+
+      - read: homepage
+        prompt: Where will you publish the code for this plugin?
+        default: https://github.com/<USER>/<REPO>
+
+
+      - read: nop1
+        prompt: |
+          # Publishing a plugin to the Marketplace
+
+          Before publishing the package, remember to prepare two files:
+
+          * docs/cover-1200x800.png: the cover that will be used to present the plugin in the Marketplace (PNG, 1200x800px)
+          * docs/preview.mp4: a presentation video showing the plugin in action
+
+          For more info: https://www.datocms.com/docs/plugin-sdk/publishing-to-marketplace
+        choices:
+          - Press ENTER to continue
+
+  - read: nop2
+    prompt:
+      eval: |
+        Alright, everything's set up! To start developing your plugin:
+
+        ```
+        cd {{ filesystem.rootdir }}
+        npm install && npm run dev
+        ```
+
+        Then add the local plugin in your DatoCMS project: https://www.datocms.com/docs/plugin-sdk/build-your-first-plugin#create-your-private-plugin
+
+    choices:
+      - Press ENTER to continue
+
+  - update: package.json
+
+  - copy: README.tmplr.md
+    to: README.md
+
+  - update: README.md
+
+  - remove: README.tmplr.md
+  - remove: .tmplr.yml
