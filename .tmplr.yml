@@ -10,6 +10,30 @@ steps:
       - Yes!
       - No, it will be a private plugin: ""
 
+  - read: package_name
+    from: undefined
+    fallback: 'datocms-plugin-<INSERT-YOUR-PACKAGE-NAME-HERE>'
+
+  - read: package_description
+    from: undefined
+    fallback: '<INSERT-YOUR-PLUGIN-DESCRIPTION-HERE>'
+
+  - read: permissions
+    from: undefined
+    fallback: '[]'
+
+  - read: package_author_name
+    from: undefined
+    fallback: '<YOUR-NAME>'
+
+  - read: package_author_email
+    from: undefined
+    fallback: '<YOUR-EMAIL>'
+
+  - read: homepage
+    from: undefined
+    fallback: 'https://github.com/<USER>/<REPO>'
+
   - if: community_plugin
     steps:
       - read: package_name
@@ -42,7 +66,6 @@ steps:
       - read: homepage
         prompt: Where will you publish the code for this plugin?
         default: https://github.com/<USER>/<REPO>
-
 
       - read: nop1
         prompt: |
