@@ -27,8 +27,8 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "datocms-plugin-sdk": "^2.0.9",
-    "datocms-react-ui": "^2.0.9",
+    "datocms-plugin-sdk": "*",
+    "datocms-react-ui": "*",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
